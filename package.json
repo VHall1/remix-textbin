@@ -12,6 +12,7 @@
     "typecheck": "tsc"
   },
   "dependencies": {
+    "@radix-ui/react-icons": "^1.3.0",
     "@radix-ui/themes": "^2.0.0",
     "@remix-run/css-bundle": "^2.2.0",
     "@remix-run/node": "^2.2.0",

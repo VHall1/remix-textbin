@@ -1,5 +1,5 @@
 .Navbar {
-  &--Container {
+  &--InnerContainer {
     min-height: 56px;
     max-width: var(--container-4);
     width: 100%;
@@ -12,5 +12,27 @@
   }
 
   &--Links {
+  }
+
+  &--Profile {
+    margin-left: auto;
+  }
+}
+
+.NavbarProfile {
+  // reset button colour
+  color: inherit;
+
+  display: flex;
+  align-items: center;
+
+  &--Text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+  &--Avatar {
+    margin-left: var(--space-3);
   }
 }
