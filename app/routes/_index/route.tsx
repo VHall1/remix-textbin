@@ -1,16 +1,24 @@
-import { EyeOpenIcon, PlusIcon } from "@radix-ui/react-icons";
+import { useForm } from "@conform-to/react";
+import { parse } from "@conform-to/zod";
+import { PlusIcon } from "@radix-ui/react-icons";
 import {
   Box,
+  Button,
   Card,
   Checkbox,
   Container,
   Section,
   Text,
   TextArea,
-  TextField,
 } from "@radix-ui/themes";
-import type { MetaFunction } from "@remix-run/node";
+import type { ActionFunctionArgs, MetaFunction } from "@remix-run/node";
+import { Form, useActionData } from "@remix-run/react";
+import { z } from "zod";
 import "~/build-styles/routes/_index/.styles.css";
+import { AccessControl } from "./access-control";
+import { PasswordField } from "./password-field";
+import { TextField } from "./text-field";
+import { ACCESS_CONTROL } from "./types";
 
 export const meta: MetaFunction = () => {
   return [
@@ -19,60 +27,62 @@ export const meta: MetaFunction = () => {
   ];
 };
 
+const schema = z.object({
+  title: z.string({ required_error: "Title is required" }),
+  expiration: z.date().optional(),
+  accessControl: z.enum(ACCESS_CONTROL),
+  password: z.string().optional(),
+});
+
+export async function action({ request }: ActionFunctionArgs) {
+  const formData = await request.formData();
+  console.log(formData);
+  const submission = parse(formData, { schema });
+  console.log(submission);
+}
+
 export default function Index() {
+  const lastSubmission = useActionData<typeof action>();
+  const [form, { title, password, expiration, accessControl }] = useForm({
+    lastSubmission,
+    onValidate({ formData }) {
+      return parse(formData, { schema });
+    },
+  });
+
   return (
     <Container>
       <Section>
-        <Card className="NewPaste">
-          {/* Title */}
-          <Box mb="4">
-            <PlusIcon />
-            <Text size="5">New paste</Text>
-          </Box>
+        <Form method="post" {...form.props}>
+          <Card className="NewPaste">
+            {/* Title */}
+            <Box mb="4">
+              <PlusIcon />
+              <Text size="5">New paste</Text>
+            </Box>
 
-          {/* Editor */}
-          {/* TODO: Use a better editor here */}
-          <TextArea placeholder="Lorem ipsum..." />
+            {/* Editor */}
+            {/* TODO: Use a better editor here */}
+            <TextArea placeholder="Lorem ipsum..." />
 
-          {/* Options */}
-          <div className="NewPaste--OptionsContainer">
-            <label htmlFor="paste-title">
-              Title
-              <TextField.Root id="paste-title">
-                <TextField.Input />
-              </TextField.Root>
-            </label>
-
-            <label htmlFor="paste-expiration">
-              Expiration
-              <TextField.Root id="paste-expiration">
-                <TextField.Input />
-              </TextField.Root>
-            </label>
-
-            <label htmlFor="paste-control">
-              Access control
-              <TextField.Root id="paste-control">
-                <TextField.Input />
-              </TextField.Root>
-            </label>
-
-            <label htmlFor="paste-password">
-              Password
-              <TextField.Root id="paste-password">
-                <TextField.Input />
-                <TextField.Slot>
-                  <EyeOpenIcon />
-                </TextField.Slot>
-              </TextField.Root>
-            </label>
+            {/* Options */}
+            <div className="NewPaste--OptionsContainer">
+              <TextField label="Title" field={title} />
+              <TextField label="Expiration" field={expiration} type="date" />
+              <AccessControl field={accessControl} />
+              <PasswordField field={password} />
+            </div>
 
             <label>
               <Checkbox defaultChecked />
               Encrypt paste
             </label>
-          </div>
-        </Card>
+
+            <Button variant="soft" type="submit">
+              Create new paste
+            </Button>
+          </Card>
+        </Form>
       </Section>
     </Container>
   );
