@@ -1,0 +1,3 @@
+@function getSpace($space) {
+  @return var(--space-#{$space});
+}
