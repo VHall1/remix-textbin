@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "build": "remix build",
-    "dev": "remix dev --manual",
+    "dev": "concurrently \"npm run dev:css\" \"npm run dev:remix\"",
+    "dev:remix": "remix dev --manual",
+    "dev:css": "sass --watch app/components/:app/build-styles/ app/routes/:app/build-styles/",
     "start": "remix-serve ./build/index.js",
     "typecheck": "tsc"
   },
@@ -24,7 +26,9 @@
     "@remix-run/eslint-config": "^2.2.0",
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
+    "concurrently": "^8.2.2",
     "eslint": "^8.38.0",
+    "sass": "^1.69.5",
     "typescript": "^5.1.6"
   },
   "engines": {

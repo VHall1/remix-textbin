@@ -1,0 +1,16 @@
+.Navbar {
+  &--Container {
+    min-height: 56px;
+    max-width: var(--container-4);
+    width: 100%;
+    margin: 0 auto;
+
+    display: flex;
+    align-items: center;
+
+    padding-inline: var(--space-4);
+  }
+
+  &--Links {
+  }
+}

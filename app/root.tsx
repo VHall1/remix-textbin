@@ -10,7 +10,9 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
-import "~/ui/theme-config.css";
+import Navbar from "~/components/navbar";
+import "~/styles/global.css";
+import "~/styles/theme-config.css";
 
 export const links: LinksFunction = () => [
   ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
@@ -39,7 +41,8 @@ export default function App() {
         <Links />
       </head>
       <body>
-        <Theme appearance="dark">
+        <Theme appearance="dark" accentColor="mint">
+          <Navbar />
           <Outlet />
         </Theme>
         <ScrollRestoration />
