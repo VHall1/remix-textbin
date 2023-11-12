@@ -1,0 +1,9 @@
+@import "helpers";
+
+.NewPaste {
+  &--OptionsContainer {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: getSpace(5);
+  }
+}
