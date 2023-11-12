@@ -1,4 +1,3 @@
-import { Theme } from "@radix-ui/themes";
 import "@radix-ui/themes/styles.css";
 import { cssBundleHref } from "@remix-run/css-bundle";
 import type { LinksFunction } from "@remix-run/node";
@@ -11,6 +10,7 @@ import {
   ScrollRestoration,
 } from "@remix-run/react";
 import Navbar from "~/components/navbar";
+import { ThemeProvider } from "~/store/theme";
 import "~/styles/global.css";
 import "~/styles/theme-config.css";
 
@@ -33,7 +33,7 @@ export const links: LinksFunction = () => [
 
 export default function App() {
   return (
-    <html lang="en" className="dark" style={{ colorScheme: "dark" }}>
+    <html lang="en">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -41,10 +41,10 @@ export default function App() {
         <Links />
       </head>
       <body>
-        <Theme appearance="dark" accentColor="mint">
+        <ThemeProvider>
           <Navbar />
           <Outlet />
-        </Theme>
+        </ThemeProvider>
         <ScrollRestoration />
         <Scripts />
         <LiveReload />
