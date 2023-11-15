@@ -1,7 +1,7 @@
 import { createCookieSessionStorage } from "@remix-run/node";
 import invariant from "tiny-invariant";
 import type { Theme } from "~/ui/theme";
-import { DEFAULT_THEME, isTheme, ThemeSource } from "~/ui/theme";
+import { DEFAULT_THEME, isTheme } from "~/ui/theme";
 
 invariant(process.env.SESSION_SECRET, "SESSION_SECRET must be set");
 
@@ -36,7 +36,6 @@ async function getThemeSession(request: Request) {
 // its source.  TODO:  Move this elsewhere?  Better typing?
 async function getTheme(request: Request): Promise<{
   theme: Theme;
-  source: ThemeSource;
 }> {
   // First, try to get the theme from the session.
   const themeSession = await getThemeSession(request);
@@ -44,7 +43,6 @@ async function getTheme(request: Request): Promise<{
   if (theme) {
     return {
       theme: theme,
-      source: ThemeSource.SESSION,
     };
   }
 
@@ -54,14 +52,12 @@ async function getTheme(request: Request): Promise<{
   if (isTheme(headerVal)) {
     return {
       theme: headerVal,
-      source: ThemeSource.HEADER,
     };
   }
 
   // Fall back to the default theme.
   return {
     theme: DEFAULT_THEME,
-    source: ThemeSource.DEFAULT,
   };
 }
 
