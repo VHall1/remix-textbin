@@ -2,7 +2,7 @@ import { PlusIcon } from "@radix-ui/react-icons";
 import { Avatar, Button, DropdownMenu, Text } from "@radix-ui/themes";
 import type { PropsWithChildren } from "react";
 import "~/build-styles/components/navbar/navbar.css";
-import { useColourMode } from "~/store/theme";
+import { Theme, useTheme } from "~/ui/theme";
 
 export default function Navbar() {
   return (
@@ -33,8 +33,7 @@ export default function Navbar() {
 }
 
 const ProfileMenu: React.FC<PropsWithChildren> = ({ children }) => {
-  const { setMode } = useColourMode();
-
+  const { setTheme } = useTheme();
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger>{children}</DropdownMenu.Trigger>
@@ -45,13 +44,10 @@ const ProfileMenu: React.FC<PropsWithChildren> = ({ children }) => {
         <DropdownMenu.Sub>
           <DropdownMenu.SubTrigger>Colour mode</DropdownMenu.SubTrigger>
           <DropdownMenu.SubContent>
-            <DropdownMenu.Item onClick={() => setMode("inherit")}>
-              Use device theme
-            </DropdownMenu.Item>
-            <DropdownMenu.Item onClick={() => setMode("dark")}>
+            <DropdownMenu.Item onClick={() => setTheme(Theme.DARK)}>
               Dark mode
             </DropdownMenu.Item>
-            <DropdownMenu.Item onClick={() => setMode("light")}>
+            <DropdownMenu.Item onClick={() => setTheme(Theme.LIGHT)}>
               Light mode
             </DropdownMenu.Item>
           </DropdownMenu.SubContent>
