@@ -3,7 +3,7 @@ enum Theme {
   LIGHT = "light",
 }
 
-const DEFAULT_THEME = Theme.LIGHT;
+const DEFAULT_THEME = Theme.DARK;
 
 // Helper to type check Theme value
 const themes: Array<Theme> = Object.values(Theme);
