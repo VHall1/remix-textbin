@@ -4,13 +4,7 @@ import type { ReactNode } from "react";
 import type { FetcherWithComponents } from "@remix-run/react";
 import { useFetcher } from "@remix-run/react";
 
-import {
-  Theme,
-  PREFERS_DARK_MQ,
-  setPrefersTheme,
-  setPrefersColorScheme,
-  ThemeSource,
-} from "./utils";
+import { Theme, PREFERS_DARK_MQ, setPrefersTheme, ThemeSource } from "./utils";
 
 // ThemeContext
 type ThemeContextType = {
@@ -51,7 +45,6 @@ function ThemeProvider({
       const handleChange = (ev: MediaQueryListEvent) => {
         const prefers = ev.matches ? Theme.DARK : Theme.LIGHT;
         setPrefersTheme(prefers);
-        setPrefersColorScheme(prefers);
         setThemeInState(prefers);
       };
       mediaQuery.addEventListener("change", handleChange);
@@ -67,7 +60,6 @@ function ThemeProvider({
       );
       // Optimistically set here so there is no delay in theme change
       setPrefersTheme(prefers);
-      setPrefersColorScheme(prefers);
       // Then trigger the state change and theme session cookie change via fetcher
       setThemeInState(prefers);
     };

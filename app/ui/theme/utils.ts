@@ -46,38 +46,6 @@ function setPrefersTheme(theme: Theme | null) {
   return prefers;
 }
 
-function getPrefersColorScheme(theme: Theme | null) {
-  let prefers;
-  if (theme) {
-    prefers = theme;
-  } else {
-    prefers = getPrefers();
-  }
-  return prefers === "dark" ? "dark light" : "light dark";
-}
-
-function setPrefersColorScheme(theme: Theme | null) {
-  let prefers;
-  if (theme) {
-    prefers = theme;
-  } else {
-    prefers = getPrefers();
-  }
-  if (typeof document !== "undefined") {
-    const meta: any = document.querySelector("meta[name=color-scheme]");
-    if (meta) {
-      if (prefers === "dark") {
-        meta.content = "dark light";
-      } else if (prefers === "light") {
-        meta.content = "light dark";
-      }
-    } else {
-      // eslint-disable-next-line no-console
-      console.warn('meta tag name="color-scheme" not found');
-    }
-  }
-}
-
 function setPrefersSystem() {
   if (typeof document !== "undefined") {
     const head = document.documentElement;
@@ -116,8 +84,6 @@ export {
   getPrefers,
   getPrefersTheme,
   setPrefersTheme,
-  getPrefersColorScheme,
-  setPrefersColorScheme,
   setPrefersSystem,
   isTheme,
 };
