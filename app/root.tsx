@@ -1,3 +1,4 @@
+import { Theme as RadixTheme } from "@radix-ui/themes";
 import "@radix-ui/themes/styles.css";
 import { cssBundleHref } from "@remix-run/css-bundle";
 import {
@@ -18,15 +19,14 @@ import {
 import Navbar from "~/components/navbar";
 import "~/styles/global.css";
 import "~/styles/theme-config.css";
-import type { Theme, ThemeSource } from "~/ui/theme";
+import type { Theme } from "~/ui/theme";
 import { ThemeProvider } from "~/ui/theme";
 import { getTheme } from "./theme.server";
-import { Theme as RadixTheme } from "@radix-ui/themes";
 
 export default function App() {
   const data = useLoaderData<typeof loader>();
 
-  const { theme, themeSource } = data;
+  const { theme } = data;
 
   return (
     <html lang="en" className={theme}>
@@ -37,7 +37,7 @@ export default function App() {
         <Links />
       </head>
       <body>
-        <ThemeProvider theme={theme} themeSource={themeSource}>
+        <ThemeProvider theme={theme}>
           <RadixTheme appearance={theme} accentColor="mint">
             <Navbar />
             <Outlet />
@@ -53,17 +53,16 @@ export default function App() {
 
 export type LoaderData = {
   theme: Theme;
-  themeSource: ThemeSource;
 };
 
 export const loader: LoaderFunction = async ({
   request,
 }: LoaderFunctionArgs) => {
-  const { theme, source } = await getTheme(request);
+  const { theme } = await getTheme(request);
 
   const data: LoaderData = {
     theme,
-    themeSource: source,
+    // themeSource: source,
     // user: user,
     // origin: getDomainUrl(request),
     // path: new URL(request.url).pathname,
