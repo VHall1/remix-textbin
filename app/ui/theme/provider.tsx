@@ -1,34 +1,26 @@
 import type { FetcherWithComponents } from "@remix-run/react";
 import { useFetcher } from "@remix-run/react";
-import type { ReactNode } from "react";
-import { createContext, useContext, useMemo, useState } from "react";
-import { Theme } from "./utils";
+import * as React from "react";
+import type { Theme } from "./utils";
 
-// ThemeContext
-type ThemeContextType = {
-  theme: Theme | null;
-  setTheme: (theme: Theme) => void;
-};
-const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+export const ThemeContext = React.createContext<ThemeContextType | undefined>(
+  undefined
+);
 
-type ThemeProviderProps = {
-  children: ReactNode;
-  theme: Theme;
-};
-
-// ThemeProvider
-function ThemeProvider({ children, theme }: ThemeProviderProps) {
+export function ThemeProvider({
+  children,
+  theme,
+}: React.PropsWithChildren<ThemeProviderProps>) {
   const persistTheme: FetcherWithComponents<any> = useFetcher();
-  const [themeInState, setThemeInState] = useState<Theme>(theme);
+  const [themeInState, setThemeInState] = React.useState<Theme>(theme);
 
-  const contextValue = useMemo(() => {
+  const contextValue = React.useMemo(() => {
     const setTheme = (prefers: Theme) => {
       persistTheme.submit(
         { theme: prefers },
         { action: "actions/set-theme", method: "post" }
       );
 
-      // Then trigger the state change and theme session cookie change via fetcher
       setThemeInState(prefers);
     };
     return { theme: themeInState, setTheme };
@@ -41,13 +33,19 @@ function ThemeProvider({ children, theme }: ThemeProviderProps) {
   );
 }
 
-// Hook helper useTheme
-function useTheme() {
-  const context = useContext(ThemeContext);
+export function useTheme() {
+  const context = React.useContext(ThemeContext);
   if (context === undefined) {
     throw new Error("useTheme must be used within a ThemeProvider");
   }
   return context;
 }
 
-export { Theme, ThemeProvider, useTheme };
+interface ThemeContextType {
+  theme: Theme | null;
+  setTheme: (theme: Theme) => void;
+}
+
+interface ThemeProviderProps {
+  theme: Theme;
+}
