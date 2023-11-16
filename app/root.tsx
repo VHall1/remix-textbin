@@ -27,6 +27,7 @@ import "~/styles/global.css";
 import "~/styles/theme-config.css";
 
 export default function App() {
+  // TODO: Improve typing here
   const data = useLoaderData<typeof loader>();
   const { theme, user } = data;
 
@@ -63,7 +64,8 @@ export type LoaderData = {
 export const loader: LoaderFunction = async ({
   request,
 }: LoaderFunctionArgs) => {
-  const { theme } = await getTheme(request);
+  // TODO: Load these in parallel?
+  const theme = await getTheme(request);
   const user = await getUser(request);
 
   const data: LoaderData = {

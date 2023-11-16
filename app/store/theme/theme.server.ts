@@ -10,9 +10,6 @@ const themeStorage = createCookieSessionStorage({
     name: "__app_theme",
     sameSite: "lax",
     path: "/",
-    // Expires can also be set (although maxAge overrides it when used in combination).
-    // Note that this method is NOT recommended as `new Date` creates only one date on each server deployment, not a dynamic date in the future!
-    // expires: new Date(Date.now() + 60_000),
     maxAge: 34560000, // 400 days - https://chromestatus.com/feature/4887741241229312
     httpOnly: true,
     secrets: [process.env.SESSION_SECRET],
@@ -34,31 +31,23 @@ async function getThemeSession(request: Request) {
 
 // Helper to extract theme from session or header; returns the theme value and
 // its source.  TODO:  Move this elsewhere?  Better typing?
-async function getTheme(request: Request): Promise<{
-  theme: Theme;
-}> {
+async function getTheme(request: Request): Promise<Theme> {
   // First, try to get the theme from the session.
   const themeSession = await getThemeSession(request);
   const theme = themeSession.getTheme();
   if (theme) {
-    return {
-      theme: theme,
-    };
+    return theme;
   }
 
   // If there's no theme in the session, look for the prefers-color-scheme
   // header.
   const headerVal = request.headers.get("sec-ch-prefers-color-scheme");
   if (isTheme(headerVal)) {
-    return {
-      theme: headerVal,
-    };
+    return headerVal;
   }
 
   // Fall back to the default theme.
-  return {
-    theme: DEFAULT_THEME,
-  };
+  return DEFAULT_THEME;
 }
 
-export { getTheme, getThemeSession };
+export { getThemeSession, getTheme };
