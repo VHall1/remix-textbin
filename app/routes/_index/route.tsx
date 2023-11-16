@@ -17,7 +17,7 @@ import { z } from "zod";
 import "~/build-styles/routes/_index/.styles.css";
 import { AccessControl } from "./access-control";
 import { PasswordField } from "./password-field";
-import { TextField } from "./text-field";
+import { TextField } from "~/components/forms";
 import { ACCESS_CONTROL } from "./types";
 
 export const meta: MetaFunction = () => {

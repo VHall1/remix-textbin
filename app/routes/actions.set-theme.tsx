@@ -1,7 +1,7 @@
 import type { ActionFunction, ActionFunctionArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { getThemeSession } from "~/theme.server";
-import { isTheme } from "~/ui/theme";
+import { getThemeSession } from "~/store/theme/theme.server";
+import { isTheme } from "~/store/theme/util";
 
 export const action: ActionFunction = async ({
   request,

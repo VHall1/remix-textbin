@@ -2,7 +2,8 @@ import { PlusIcon } from "@radix-ui/react-icons";
 import { Avatar, Button, DropdownMenu, Text } from "@radix-ui/themes";
 import type { PropsWithChildren } from "react";
 import "~/build-styles/components/navbar/navbar.css";
-import { Theme, useTheme } from "~/ui/theme";
+import { useTheme } from "~/store/theme/theme";
+import { Theme } from "~/store/theme/util";
 
 export default function Navbar() {
   return (

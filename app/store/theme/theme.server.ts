@@ -1,7 +1,7 @@
 import { createCookieSessionStorage } from "@remix-run/node";
 import invariant from "tiny-invariant";
-import type { Theme } from "~/ui/theme";
-import { DEFAULT_THEME, isTheme } from "~/ui/theme";
+import type { Theme } from "./util";
+import { DEFAULT_THEME, isTheme } from "./util";
 
 invariant(process.env.SESSION_SECRET, "SESSION_SECRET must be set");
 

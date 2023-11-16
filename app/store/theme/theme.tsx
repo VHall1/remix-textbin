@@ -1,7 +1,7 @@
 import type { FetcherWithComponents } from "@remix-run/react";
 import { useFetcher } from "@remix-run/react";
 import * as React from "react";
-import type { Theme } from "./utils";
+import type { Theme } from "./util";
 
 export const ThemeContext = React.createContext<ThemeContextType | undefined>(
   undefined

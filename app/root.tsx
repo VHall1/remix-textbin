@@ -17,11 +17,11 @@ import {
   useLoaderData,
 } from "@remix-run/react";
 import Navbar from "~/components/navbar";
+import { ThemeProvider } from "~/store/theme/theme";
+import { getTheme } from "~/store/theme/theme.server";
+import type { Theme } from "~/store/theme/util";
 import "~/styles/global.css";
 import "~/styles/theme-config.css";
-import type { Theme } from "~/ui/theme";
-import { ThemeProvider } from "~/ui/theme";
-import { getTheme } from "./theme.server";
 
 export default function App() {
   const data = useLoaderData<typeof loader>();
