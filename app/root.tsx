@@ -1,3 +1,4 @@
+import { type User } from "@prisma/client";
 import { Theme as RadixTheme } from "@radix-ui/themes";
 import "@radix-ui/themes/styles.css";
 import { cssBundleHref } from "@remix-run/css-bundle";
@@ -20,13 +21,14 @@ import Navbar from "~/components/navbar";
 import { ThemeProvider } from "~/store/theme/theme";
 import { getTheme } from "~/store/theme/theme.server";
 import type { Theme } from "~/store/theme/util";
+import { UserProvider } from "~/store/user/user";
+import { getUser } from "~/store/user/user.server";
 import "~/styles/global.css";
 import "~/styles/theme-config.css";
 
 export default function App() {
   const data = useLoaderData<typeof loader>();
-
-  const { theme } = data;
+  const { theme, user } = data;
 
   return (
     <html lang="en" className={theme}>
@@ -37,12 +39,14 @@ export default function App() {
         <Links />
       </head>
       <body>
-        <ThemeProvider theme={theme}>
-          <RadixTheme appearance={theme} accentColor="mint">
-            <Navbar />
-            <Outlet />
-          </RadixTheme>
-        </ThemeProvider>
+        <UserProvider user={user}>
+          <ThemeProvider theme={theme}>
+            <RadixTheme appearance={theme} accentColor="mint">
+              <Navbar />
+              <Outlet />
+            </RadixTheme>
+          </ThemeProvider>
+        </UserProvider>
         <ScrollRestoration />
         <Scripts />
         <LiveReload />
@@ -53,27 +57,18 @@ export default function App() {
 
 export type LoaderData = {
   theme: Theme;
+  user: User | null;
 };
 
 export const loader: LoaderFunction = async ({
   request,
 }: LoaderFunctionArgs) => {
   const { theme } = await getTheme(request);
+  const user = await getUser(request);
 
   const data: LoaderData = {
     theme,
-    // themeSource: source,
-    // user: user,
-    // origin: getDomainUrl(request),
-    // path: new URL(request.url).pathname,
-    // ENV: {
-    //   SITE_TITLE: process?.env?.SITE_TITLE || "Site Title",
-    //   RECAPTCHA_ENABLED:
-    //     process.env.NODE_ENV === "development"
-    //       ? "false"
-    //       : process.env.RECAPTCHA_ENABLED,
-    //   RECAPTCHA_SITE_KEY: process.env.RECAPTCHA_SITE_KEY,
-    // },
+    user,
   };
 
   return json(data);

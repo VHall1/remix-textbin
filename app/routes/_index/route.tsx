@@ -15,9 +15,8 @@ import type { ActionFunctionArgs, MetaFunction } from "@remix-run/node";
 import { Form, useActionData } from "@remix-run/react";
 import { z } from "zod";
 import "~/build-styles/routes/_index/.styles.css";
+import { PasswordField, TextField } from "~/components/forms";
 import { AccessControl } from "./access-control";
-import { PasswordField } from "./password-field";
-import { TextField } from "~/components/forms";
 import { ACCESS_CONTROL } from "./types";
 
 export const meta: MetaFunction = () => {

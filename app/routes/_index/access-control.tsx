@@ -1,6 +1,6 @@
 import type { FieldConfig } from "@conform-to/react";
 import { Select } from "@radix-ui/themes";
-import { Error } from "./error";
+import { Error } from "~/components/forms";
 
 export function AccessControl({
   field,

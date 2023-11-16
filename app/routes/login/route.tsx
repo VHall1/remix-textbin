@@ -1,6 +1,14 @@
 import { useForm } from "@conform-to/react";
 import { parse } from "@conform-to/zod";
-import { Avatar, Box, Card, Container, Flex, Text } from "@radix-ui/themes";
+import {
+  Avatar,
+  Box,
+  Button,
+  Card,
+  Container,
+  Flex,
+  Text,
+} from "@radix-ui/themes";
 import {
   json,
   type ActionFunctionArgs,
@@ -10,48 +18,39 @@ import {
 import { Form, useActionData } from "@remix-run/react";
 import { z } from "zod";
 import "~/build-styles/routes/login/.styles.css";
+import { TextField } from "~/components/forms";
 import { getTheme } from "~/store/theme/theme.server";
 import type { Theme } from "~/store/theme/util";
 
 const schema = z.object({
   username: z.string({ required_error: "Username is required" }),
-  password: z.string({ required_error: "Password is required" }),
+  // password: z.string({ required_error: "Password is required" }),
 });
 
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
-  console.log(formData);
+  // console.log(formData);
   const submission = parse(formData, { schema });
-  console.log(submission);
+  // console.log(submission);
+  return null;
 }
 
 export default function App() {
   // const data = useLoaderData<typeof loader>();
   const lastSubmission = useActionData<typeof action>();
-  const [form] = useForm({
+  const [form, { username }] = useForm({
     lastSubmission,
+    onValidate({ formData }) {
+      return parse(formData, { schema });
+    },
   });
 
   return (
     <Container className="Login">
       <Card style={{ maxWidth: 240 }}>
         <Form method="post" {...form.props}>
-          <Flex gap="3" align="center">
-            <Avatar
-              size="3"
-              src="https://images.unsplash.com/photo-1607346256330-dee7af15f7c5?&w=64&h=64&dpr=2&q=70&crop=focalpoint&fp-x=0.67&fp-y=0.5&fp-z=1.4&fit=crop"
-              radius="full"
-              fallback="T"
-            />
-            <Box>
-              <Text as="div" size="2" weight="bold">
-                Teodros Girmay
-              </Text>
-              <Text as="div" size="2" color="gray">
-                Engineering
-              </Text>
-            </Box>
-          </Flex>
+          <TextField label="Username" field={username} />
+          <Button type="submit">login</Button>
         </Form>
       </Card>
     </Container>

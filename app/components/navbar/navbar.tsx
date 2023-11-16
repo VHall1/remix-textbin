@@ -4,8 +4,12 @@ import type { PropsWithChildren } from "react";
 import "~/build-styles/components/navbar/navbar.css";
 import { useTheme } from "~/store/theme/theme";
 import { Theme } from "~/store/theme/util";
+import { useUser } from "~/store/user/user";
 
 export default function Navbar() {
+  const { user } = useUser();
+  console.log(user);
+
   return (
     <header className="Navbar">
       <div className="Navbar--InnerContainer">
