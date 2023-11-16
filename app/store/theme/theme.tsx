@@ -4,7 +4,7 @@ import * as React from "react";
 import type { Theme } from "./util";
 
 interface ThemeContextType {
-  theme: Theme | null;
+  theme: Theme;
   setTheme: (theme: Theme) => void;
 }
 
