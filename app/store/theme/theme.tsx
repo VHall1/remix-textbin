@@ -3,11 +3,20 @@ import { useFetcher } from "@remix-run/react";
 import * as React from "react";
 import type { Theme } from "./util";
 
-export const ThemeContext = React.createContext<ThemeContextType | undefined>(
+interface ThemeContextType {
+  theme: Theme | null;
+  setTheme: (theme: Theme) => void;
+}
+
+const ThemeContext = React.createContext<ThemeContextType | undefined>(
   undefined
 );
 
-export function ThemeProvider({
+interface ThemeProviderProps {
+  theme: Theme;
+}
+
+function ThemeProvider({
   children,
   theme,
 }: React.PropsWithChildren<ThemeProviderProps>) {
@@ -33,19 +42,12 @@ export function ThemeProvider({
   );
 }
 
-export function useTheme() {
-  const context = React.useContext(ThemeContext);
-  if (context === undefined) {
+function useTheme() {
+  const ctx = React.useContext(ThemeContext);
+  if (ctx === undefined) {
     throw new Error("useTheme must be used within a ThemeProvider");
   }
-  return context;
+  return ctx;
 }
 
-interface ThemeContextType {
-  theme: Theme | null;
-  setTheme: (theme: Theme) => void;
-}
-
-interface ThemeProviderProps {
-  theme: Theme;
-}
+export { ThemeContext, ThemeProvider, useTheme };
