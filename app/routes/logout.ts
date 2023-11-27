@@ -6,13 +6,8 @@ export const action: ActionFunction = async ({
   request,
 }: ActionFunctionArgs) => {
   const userSession = await getUserSession(request);
-  const requestText = await request.text();
-  const form = new URLSearchParams(requestText);
-  const user = form.get("user");
-
-  userSession.setUser(user);
-  return json(
-    { success: true },
-    { headers: { "Set-Cookie": await userSession.commit() } }
-  );
+  userSession.setUser(undefined);
+  return json(undefined, {
+    headers: { "Set-Cookie": await userSession.commit() },
+  });
 };

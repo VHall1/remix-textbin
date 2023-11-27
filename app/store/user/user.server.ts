@@ -9,6 +9,7 @@ const userStorage = createCookieSessionStorage({
     name: "__app_session",
     sameSite: "lax",
     path: "/",
+    // 14 days
     maxAge: 60 * 60 * 24 * 14,
     httpOnly: true,
     secrets: [process.env.SESSION_SECRET],
@@ -20,17 +21,15 @@ async function getUserSession(request: Request) {
   const session = await userStorage.getSession(request.headers.get("Cookie"));
 
   return {
-    getUser: (): User | null => session.get("user"),
-    setUser: (user: User | null) => session.set("user", user),
+    getUser: (): User | undefined => session.get("user"),
+    setUser: (user: User | undefined) => session.set("user", user),
     commit: () => userStorage.commitSession(session),
   };
 }
 
-async function getUser(request: Request): Promise<User | null> {
+async function getUser(request: Request): Promise<User | undefined> {
   const userSession = await getUserSession(request);
-  const user = userSession.getUser();
-  if (user) return user;
-  return null;
+  return userSession.getUser();
 }
 
 export { getUserSession, getUser };

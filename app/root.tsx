@@ -1,11 +1,9 @@
-import { type User } from "@prisma/client";
 import { Theme as RadixTheme } from "@radix-ui/themes";
 import "@radix-ui/themes/styles.css";
 import { cssBundleHref } from "@remix-run/css-bundle";
 import {
   json,
   type LinksFunction,
-  type LoaderFunction,
   type LoaderFunctionArgs,
 } from "@remix-run/node";
 import {
@@ -20,16 +18,13 @@ import {
 import Navbar from "~/components/navbar";
 import { ThemeProvider } from "~/store/theme/theme";
 import { getTheme } from "~/store/theme/theme.server";
-import type { Theme } from "~/store/theme/util";
 import { UserProvider } from "~/store/user/user";
 import { getUser } from "~/store/user/user.server";
 import "~/styles/global.css";
 import "~/styles/theme-config.css";
 
 export default function App() {
-  // TODO: Improve typing here
-  const data = useLoaderData<typeof loader>();
-  const { theme, user } = data;
+  const { theme, user } = useLoaderData<typeof loader>();
 
   return (
     <html lang="en" className={theme}>
@@ -56,19 +51,13 @@ export default function App() {
   );
 }
 
-export type LoaderData = {
-  theme: Theme;
-  user: User | null;
-};
+export const loader = async ({ request }: LoaderFunctionArgs) => {
+  const [user, theme] = await Promise.all([
+    getUser(request),
+    getTheme(request),
+  ]);
 
-export const loader: LoaderFunction = async ({
-  request,
-}: LoaderFunctionArgs) => {
-  // TODO: Load these in parallel?
-  const theme = await getTheme(request);
-  const user = await getUser(request);
-
-  const data: LoaderData = {
+  const data = {
     theme,
     user,
   };

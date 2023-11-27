@@ -1,44 +1,50 @@
-import type { FetcherWithComponents } from "@remix-run/react";
+import type { User } from "@prisma/client";
 import { useFetcher } from "@remix-run/react";
 import * as React from "react";
-import type { User } from "@prisma/client";
 
 interface UserContextType {
-  user: User | null;
-  setUser: (user: User | null) => void;
+  user: User | undefined;
+  setUser: React.Dispatch<React.SetStateAction<User | undefined>>;
+  logout: () => void;
 }
 
 const UserContext = React.createContext<UserContextType | undefined>(undefined);
 
 interface UserProviderProps {
-  user: User | null;
+  user: UserContextType["user"];
 }
 
 function UserProvider({
   children,
-  user = null,
+  user = undefined,
 }: React.PropsWithChildren<UserProviderProps>) {
-  const persistUser: FetcherWithComponents<any> = useFetcher();
-  const [userInState, setUserInState] = React.useState<User | null>(user);
+  const fetcher = useFetcher();
+  const [userInState, setUserInState] =
+    React.useState<UserContextType["user"]>(user);
 
-  const ctx = React.useMemo(() => {
-    const setUser = (user: User | null) => {
-      persistUser.submit({ user }, { action: "actions/login", method: "post" });
-      setUserInState(user);
-    };
+  const handleLogout = () => {
+    fetcher.submit({}, { action: "logout", method: "post" });
+    setUserInState(undefined);
+  };
 
-    return { user: userInState, setUser };
-  }, [userInState, persistUser]);
-
-  return <UserContext.Provider value={ctx}>{children}</UserContext.Provider>;
+  return (
+    <UserContext.Provider
+      value={{
+        user: userInState,
+        setUser: setUserInState,
+        logout: handleLogout,
+      }}
+    >
+      {children}
+    </UserContext.Provider>
+  );
 }
 
 function useUser() {
   const ctx = React.useContext(UserContext);
   if (ctx === undefined) {
-    throw new Error("useTheme must be used within a ThemeProvider");
+    throw new Error("useUser hook must be used within a UserProvider");
   }
-
   return ctx;
 }
 

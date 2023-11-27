@@ -7,9 +7,8 @@ export const action: ActionFunction = async ({
   request,
 }: ActionFunctionArgs) => {
   const themeSession = await getThemeSession(request);
-  const requestText = await request.text();
-  const form = new URLSearchParams(requestText);
-  const theme = form.get("theme");
+  const formData = await request.formData();
+  const theme = formData.get("theme");
 
   if (!isTheme(theme)) {
     return json({
