@@ -6,7 +6,6 @@ import {
   Button,
   Card,
   Checkbox,
-  Container,
   Section,
   Text,
   TextArea,
@@ -16,6 +15,7 @@ import { Form, useActionData } from "@remix-run/react";
 import { z } from "zod";
 import "~/build-styles/routes/_index/styles.css";
 import { PasswordField, TextField } from "~/components/forms";
+import { Layout } from "~/components/layout";
 import { AccessControl } from "./access-control";
 import { ACCESS_CONTROL } from "./types";
 
@@ -50,7 +50,7 @@ export default function Index() {
   });
 
   return (
-    <Container>
+    <Layout>
       <Section>
         <Form method="post" {...form.props}>
           <Card className="NewPaste">
@@ -83,6 +83,6 @@ export default function Index() {
           </Card>
         </Form>
       </Section>
-    </Container>
+    </Layout>
   );
 }

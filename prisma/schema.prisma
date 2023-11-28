@@ -11,17 +11,29 @@ datasource db {
 }
 
 model User {
-  id       Int     @id @default(autoincrement())
-  username String?
-  pastes   Paste[]
+  id        String    @id @default(uuid())
+  username  String?
+  email     String    @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  sessions  Session[]
+  pastes    Paste[]
+}
+
+model Session {
+  id             String   @id @default(uuid())
+  createdAt      DateTime @default(now())
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId         String
+  expirationDate DateTime
 }
 
 model Paste {
-  id            Int     @id @default(autoincrement())
+  id            String     @id @default(uuid())
   title         String
   content       String?
   password      String?
   accessControl String  @default("public")
-  author        User    @relation(fields: [authorId], references: [id])
-  authorId      Int
+  user          User    @relation(fields: [userId], references: [id])
+  userId        String
 }

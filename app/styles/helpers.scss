@@ -1,3 +1,43 @@
 @function getSpace($space) {
   @return var(--space-#{$space});
 }
+
+@function getContainer($container) {
+  @return var(----container-#{$space});
+}
+
+// Breakpoints
+
+$breakpoints: (
+  initial: 0px,
+  xs: 520px,
+  sm: 768px,
+  md: 1024px,
+  lg: 1280px,
+  xl: 1640px,
+);
+
+@function getBreakpoint($breakpoint) {
+  @if map-has-key($breakpoints, $breakpoint) {
+    @return map-get($breakpoints, $breakpoint);
+  } @else {
+    @warn "Unknown breakpoint: #{$breakpoint}. Check your breakpoint map.";
+    @return null;
+  }
+}
+
+@function useBreakpointInternal($breakpoint) {
+  $min-width: getBreakpoint($breakpoint);
+
+  @if $min-width {
+    @return "only screen and (min-width: #{$min-width})";
+  } @else {
+    @return null;
+  }
+}
+
+@mixin useBreakpoint($breakpoint) {
+  @media #{media-query($breakpoint)} {
+    @content;
+  }
+}

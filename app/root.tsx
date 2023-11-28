@@ -15,7 +15,6 @@ import {
   ScrollRestoration,
   useLoaderData,
 } from "@remix-run/react";
-import Navbar from "~/components/navbar";
 import { ThemeProvider } from "~/store/theme/theme";
 import { getTheme } from "~/store/theme/theme.server";
 import { UserProvider } from "~/store/user/user";
@@ -38,7 +37,6 @@ export default function App() {
         <UserProvider user={user}>
           <ThemeProvider theme={theme}>
             <RadixTheme appearance={theme} accentColor="mint">
-              <Navbar />
               <Outlet />
             </RadixTheme>
           </ThemeProvider>

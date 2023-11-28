@@ -1,19 +1,18 @@
-import { CheckCircledIcon, CheckIcon, PlusIcon } from "@radix-ui/react-icons";
+import { CheckCircledIcon, PlusIcon } from "@radix-ui/react-icons";
 import {
   Avatar,
-  Box,
   Button,
   DropdownMenu,
   Flex,
   Link,
   Text,
 } from "@radix-ui/themes";
+import { Link as RemixLink } from "@remix-run/react";
 import type { PropsWithChildren } from "react";
 import "~/build-styles/components/navbar/navbar.css";
 import { useTheme } from "~/store/theme/theme";
 import { Theme } from "~/store/theme/util";
 import { useUser } from "~/store/user/user";
-import { Link as RemixLink } from "@remix-run/react";
 
 export default function Navbar() {
   const { user } = useUser();
@@ -78,7 +77,7 @@ const ProfileMenu: React.FC<PropsWithChildren> = ({ children }) => {
         ) : (
           <>
             <Link asChild>
-              <RemixLink to="/signup">
+              <RemixLink to="/login">
                 <DropdownMenu.Item>Sign up</DropdownMenu.Item>
               </RemixLink>
             </Link>
@@ -103,8 +102,6 @@ const ProfileMenu: React.FC<PropsWithChildren> = ({ children }) => {
             </DropdownMenu.Item>
           </DropdownMenu.SubContent>
         </DropdownMenu.Sub>
-        <DropdownMenu.Separator />
-        <DropdownMenu.Item>Settings</DropdownMenu.Item>
       </DropdownMenu.Content>
     </DropdownMenu.Root>
   );
